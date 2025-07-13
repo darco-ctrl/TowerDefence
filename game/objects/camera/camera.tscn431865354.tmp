@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://ehbp31uie557"]
+
+[ext_resource type="Script" uid="uid://dwkx6au2awnni" path="res://game/objects/camera/camera.gd" id="1_a1flj"]
+
+[node name="Camera" type="Node3D" node_paths=PackedStringArray("camera_pivot", "camera")]
+script = ExtResource("1_a1flj")
+camera_pivot = NodePath("CameraPivot")
+camera = NodePath("CameraPivot/Camera3D")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 0.968034, 0.250819, 0, -0.250819, 0.968034, 0, 2, 3)

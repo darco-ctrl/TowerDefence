@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://c2h81fwscgllm"]
+
+[ext_resource type="PackedScene" uid="uid://ehbp31uie557" path="res://game/objects/camera/camera.tscn" id="1_xgxna"]
+[ext_resource type="PackedScene" uid="uid://bt8o5u4q4sca2" path="res://game/Environment/env.tscn" id="2_44a8m"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_7i7o5"]
+
+[node name="main" type="Node"]
+
+[node name="3d_objects" type="Node3D" parent="."]
+
+[node name="Mobs" type="Node3D" parent="3d_objects"]
+
+[node name="Objects" type="Node3D" parent="3d_objects"]
+
+[node name="Camera" parent="3d_objects/Objects" instance=ExtResource("1_xgxna")]
+
+[node name="Plane" type="MeshInstance3D" parent="3d_objects/Objects"]
+mesh = SubResource("PlaneMesh_7i7o5")
+
+[node name="Env" parent="3d_objects" instance=ExtResource("2_44a8m")]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
