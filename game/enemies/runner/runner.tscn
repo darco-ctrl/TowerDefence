@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://coag1ec3lnaft"]
+
+[ext_resource type="Script" uid="uid://psfubnoirnsy" path="res://game/enemies/runner/runner_control.gd" id="1_pe3qk"]
+[ext_resource type="Script" uid="uid://h11162duv64k" path="res://game/resources/enemy_data.gd" id="2_3hr7e"]
+
+[sub_resource type="Resource" id="Resource_dkeax"]
+script = ExtResource("2_3hr7e")
+disable = false
+name = "runner"
+progression_speed = 2.0
+health = 50.0
+attack_damange = 10.0
+defence = 1.0
+metadata/_custom_type_script = "uid://h11162duv64k"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_idms1"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pe3qk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_3hr7e"]
+material = SubResource("StandardMaterial3D_pe3qk")
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="Runner" type="Area3D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_pe3qk")
+data = SubResource("Resource_dkeax")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_idms1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_3hr7e")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

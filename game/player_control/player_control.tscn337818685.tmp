@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://bb8pwrka8tg7q"]
+
+[ext_resource type="Script" uid="uid://h0qlmqgpa3kv" path="res://game/player_control/player_control.gd" id="1_07feo"]
+[ext_resource type="Script" uid="uid://dwkx6au2awnni" path="res://game/player_control/camera.gd" id="2_u4en0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_07feo"]
+transparency = 1
+albedo_color = Color(0.129412, 1, 0.172549, 0.305882)
+
+[sub_resource type="BoxMesh" id="BoxMesh_07feo"]
+material = SubResource("StandardMaterial3D_07feo")
+size = Vector3(1, 2, 1)
+
+[node name="player_control" type="Node3D" node_paths=PackedStringArray("camera", "placing_block")]
+script = ExtResource("1_07feo")
+camera = NodePath("Camera/CameraPivot/Camera3D")
+placing_block = NodePath("MeshInstance3D")
+
+[node name="Camera" type="Node3D" parent="." node_paths=PackedStringArray("camera_pivot", "camera")]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0)
+script = ExtResource("2_u4en0")
+camera_pivot = NodePath("CameraPivot")
+camera = NodePath("CameraPivot/Camera3D")
+
+[node name="CameraPivot" type="Node3D" parent="Camera"]
+
+[node name="Camera3D" type="Camera3D" parent="Camera/CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_07feo")

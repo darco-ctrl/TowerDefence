@@ -1,0 +1,95 @@
+[gd_scene load_steps=14 format=3 uid="uid://x00ff8tmi1vp"]
+
+[ext_resource type="Script" uid="uid://cxoduvq87fy5p" path="res://game/maps/map_1/map_script.gd" id="1_hwb2h"]
+[ext_resource type="PackedScene" uid="uid://coag1ec3lnaft" path="res://game/enemies/runner/runner.tscn" id="2_431im"]
+[ext_resource type="PackedScene" uid="uid://56flr36bcpv3" path="res://game/enemies/tank/tank.tscn" id="3_mgor1"]
+[ext_resource type="Script" uid="uid://cy0sw3v7o2ekq" path="res://game/resources/wave_data.gd" id="3_x5axu"]
+
+[sub_resource type="Resource" id="Resource_431im"]
+script = ExtResource("3_x5axu")
+enemies_type = Array[int]([0, 1])
+enemies_number = Array[int]([4, 5])
+enemy_interval = 0.1
+enemy_difference_interval = 1.0
+wave_interval = 5.0
+metadata/_custom_type_script = "uid://cy0sw3v7o2ekq"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tamcx"]
+albedo_color = Color(0.474766, 0.118109, 1.92523e-07, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tamcx"]
+material = SubResource("StandardMaterial3D_tamcx")
+size = Vector3(3, 0.1, 0.5)
+
+[sub_resource type="Curve3D" id="Curve3D_tamcx"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3.004, 0, 0, 0, 0, 0, 0, 2.5, 0, 2.992, 0, 0, 0, 0, 0, 0, 2.5, 0, 0.03),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xkgi8"]
+size = Vector3(0.5, 0.5, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xkgi8"]
+albedo_color = Color(0.298039, 0.976471, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_u2kqr"]
+material = SubResource("StandardMaterial3D_xkgi8")
+size = Vector3(0.5, 0.5, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u2kqr"]
+albedo_color = Color(0.412152, 0.412152, 0.412152, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_b4ycr"]
+material = SubResource("StandardMaterial3D_u2kqr")
+size = Vector3(0.5, 0.5, 0.1)
+
+[node name="map1" type="Node3D" node_paths=PackedStringArray("path_follow", "enemy_group_node")]
+script = ExtResource("1_hwb2h")
+enemy_packedscenes = Array[PackedScene]([ExtResource("2_431im"), ExtResource("3_mgor1")])
+wave_data = Array[ExtResource("3_x5axu")]([SubResource("Resource_431im")])
+path_follow = NodePath("Path/Path/PathFollow")
+enemy_group_node = NodePath("StoredEnemies")
+
+[node name="Path" type="Node3D" parent="."]
+
+[node name="mesh" type="MeshInstance3D" parent="Path"]
+mesh = SubResource("BoxMesh_tamcx")
+skeleton = NodePath("../..")
+
+[node name="mesh1" type="MeshInstance3D" parent="Path"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.25, 0, -1.75)
+mesh = SubResource("BoxMesh_tamcx")
+skeleton = NodePath("../..")
+
+[node name="mesh2" type="MeshInstance3D" parent="Path"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.25, 0, -1.75)
+mesh = SubResource("BoxMesh_tamcx")
+skeleton = NodePath("../..")
+
+[node name="Path" type="Path3D" parent="Path"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, 0.05, -3)
+curve = SubResource("Curve3D_tamcx")
+
+[node name="PathFollow" type="PathFollow3D" parent="Path/Path"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="Home" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 0.3, -2.6)
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Home"]
+shape = SubResource("BoxShape3D_xkgi8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Home"]
+mesh = SubResource("BoxMesh_u2kqr")
+
+[node name="Cavern" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, 0.3, -2.6)
+mesh = SubResource("BoxMesh_b4ycr")
+skeleton = NodePath("")
+
+[node name="StoredEnemies" type="Node3D" parent="."]
+visible = false

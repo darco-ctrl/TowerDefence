@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://c2h81fwscgllm"]
+
+[ext_resource type="PackedScene" uid="uid://bt8o5u4q4sca2" path="res://game/Environment/env.tscn" id="1_psm6y"]
+[ext_resource type="PackedScene" uid="uid://bb8pwrka8tg7q" path="res://game/player_control/player_control.tscn" id="2_yil3p"]
+[ext_resource type="PackedScene" uid="uid://x00ff8tmi1vp" path="res://game/maps/map_1/map.tscn" id="3_yil3p"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_44a8m"]
+size = Vector3(10, 1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jvw3f"]
+size = Vector3(10, 1, 10)
+
+[node name="main" type="Node"]
+
+[node name="3d_objects" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, 50)
+
+[node name="Objects" type="Node3D" parent="3d_objects"]
+
+[node name="Area3D" type="Area3D" parent="3d_objects/Objects"]
+visible = false
+collision_mask = 0
+monitorable = false
+
+[node name="Plane" type="MeshInstance3D" parent="3d_objects/Objects/Area3D"]
+mesh = SubResource("BoxMesh_44a8m")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="3d_objects/Objects/Area3D"]
+shape = SubResource("BoxShape3D_jvw3f")
+
+[node name="Env" parent="3d_objects" instance=ExtResource("1_psm6y")]
+
+[node name="PlayerControl" parent="3d_objects" instance=ExtResource("2_yil3p")]
+
+[node name="Maps" type="Node3D" parent="3d_objects"]
+
+[node name="map1" parent="3d_objects/Maps" instance=ExtResource("3_yil3p")]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
