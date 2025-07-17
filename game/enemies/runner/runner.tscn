@@ -7,10 +7,10 @@
 script = ExtResource("2_3hr7e")
 disable = false
 name = "runner"
-progression_speed = 2.0
 health = 50.0
 attack_damange = 10.0
 defence = 1.0
+speed = 4.0
 metadata/_custom_type_script = "uid://h11162duv64k"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_idms1"]
@@ -22,7 +22,7 @@ size = Vector3(0.1, 0.1, 0.1)
 material = SubResource("StandardMaterial3D_pe3qk")
 size = Vector3(0.1, 0.1, 0.1)
 
-[node name="Runner" type="Area3D"]
+[node name="Enemy" type="Area3D"]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_pe3qk")
@@ -33,5 +33,3 @@ shape = SubResource("BoxShape3D_idms1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_3hr7e")
-
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]

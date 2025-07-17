@@ -3,14 +3,14 @@
 [ext_resource type="Script" uid="uid://1latrd7bmqwu" path="res://game/enemies/tank/tank.gd" id="1_wuof1"]
 [ext_resource type="Script" uid="uid://h11162duv64k" path="res://game/resources/enemy_data.gd" id="2_e5jmm"]
 
-[sub_resource type="Resource" id="Resource_8kr6a"]
+[sub_resource type="Resource" id="Resource_e5jmm"]
 script = ExtResource("2_e5jmm")
 disable = false
 name = "Tank"
-progression_speed = 1.0
-health = 200.0
-attack_damange = 25.0
+health = 100.0
+attack_damange = 10.0
 defence = 1.0
+speed = 1.0
 metadata/_custom_type_script = "uid://h11162duv64k"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_b0xku"]
@@ -23,9 +23,9 @@ albedo_color = Color(0, 0.180392, 1, 1)
 material = SubResource("StandardMaterial3D_b0xku")
 size = Vector3(0.3, 0.3, 0.3)
 
-[node name="Tank" type="Area3D"]
+[node name="Enemy" type="Area3D"]
 script = ExtResource("1_wuof1")
-enemy_data = SubResource("Resource_8kr6a")
+data = SubResource("Resource_e5jmm")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_b0xku")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://x00ff8tmi1vp"]
+[gd_scene load_steps=15 format=3 uid="uid://x00ff8tmi1vp"]
 
 [ext_resource type="Script" uid="uid://cxoduvq87fy5p" path="res://game/maps/map_1/map_script.gd" id="1_hwb2h"]
 [ext_resource type="PackedScene" uid="uid://coag1ec3lnaft" path="res://game/enemies/runner/runner.tscn" id="2_431im"]
@@ -10,6 +10,7 @@ script = ExtResource("3_x5axu")
 enemies_type = Array[int]([0, 1])
 enemies_number = Array[int]([4, 5])
 enemy_interval = 0.1
+total_enemies = 9
 enemy_difference_interval = 1.0
 wave_interval = 5.0
 metadata/_custom_type_script = "uid://cy0sw3v7o2ekq"
@@ -22,6 +23,7 @@ material = SubResource("StandardMaterial3D_tamcx")
 size = Vector3(3, 0.1, 0.5)
 
 [sub_resource type="Curve3D" id="Curve3D_tamcx"]
+bake_interval = 0.4
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3.004, 0, 0, 0, 0, 0, 0, 2.5, 0, 2.992, 0, 0, 0, 0, 0, 0, 2.5, 0, 0.03),
 "tilts": PackedFloat32Array(0, 0, 0, 0)
@@ -45,12 +47,18 @@ albedo_color = Color(0.412152, 0.412152, 0.412152, 1)
 material = SubResource("StandardMaterial3D_u2kqr")
 size = Vector3(0.5, 0.5, 0.1)
 
-[node name="map1" type="Node3D" node_paths=PackedStringArray("path_follow", "enemy_group_node")]
+[sub_resource type="SphereShape3D" id="SphereShape3D_431im"]
+radius = 0.3
+
+[node name="map1" type="Node3D" node_paths=PackedStringArray("path", "enemy_group_node", "wave_interval", "enemy_interval")]
 script = ExtResource("1_hwb2h")
 enemy_packedscenes = Array[PackedScene]([ExtResource("2_431im"), ExtResource("3_mgor1")])
 wave_data = Array[ExtResource("3_x5axu")]([SubResource("Resource_431im")])
-path_follow = NodePath("Path/Path/PathFollow")
+enemy_spawn_interval = Array[float]([0.1, 0.5])
+path = NodePath("Path/Path")
 enemy_group_node = NodePath("StoredEnemies")
+wave_interval = NodePath("Timers/WaveInterval")
+enemy_interval = NodePath("Timers/EnemyInterval")
 
 [node name="Path" type="Node3D" parent="."]
 
@@ -72,9 +80,6 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, 0.05, -3)
 curve = SubResource("Curve3D_tamcx")
 
-[node name="PathFollow" type="PathFollow3D" parent="Path/Path"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
 [node name="Home" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 0.3, -2.6)
 collision_layer = 2
@@ -86,10 +91,27 @@ shape = SubResource("BoxShape3D_xkgi8")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Home"]
 mesh = SubResource("BoxMesh_u2kqr")
 
-[node name="Cavern" type="MeshInstance3D" parent="."]
+[node name="StoredEnemies" type="Node3D" parent="."]
+visible = false
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="EnemyInterval" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="WaveInterval" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="Cavern2" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, 0.3, -2.6)
+
+[node name="Cavern" type="MeshInstance3D" parent="Cavern2"]
 mesh = SubResource("BoxMesh_b4ycr")
 skeleton = NodePath("")
 
-[node name="StoredEnemies" type="Node3D" parent="."]
-visible = false
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cavern2"]
+shape = SubResource("SphereShape3D_431im")
+
+[connection signal="area_entered" from="Home" to="." method="_on_home_area_entered"]
+[connection signal="timeout" from="Timers/EnemyInterval" to="." method="_on_enemy_interval_timeout"]
+[connection signal="timeout" from="Timers/WaveInterval" to="." method="_on_wave_interval_timeout"]
